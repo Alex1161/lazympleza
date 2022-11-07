@@ -5,22 +5,33 @@ import (
 	"net/http"
 )
 
+func notSupportedMethod(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusMethodNotAllowed)
+	fmt.Fprintf(w, "Método no soportado")
+}
+
 func initRoutes() {
-	//http.HandleFunc("/", GetWorldCupsData)
-
-	http.HandleFunc("/wc", func(w http.ResponseWriter, r *http.Request) {
-		switch r.Method {
-		case "GET":
-			fmt.Fprintf(w, "Respuesta")
-		case "POST":
-			//Post
-		case "PATCH":
-			//Patch
-		default:
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			fmt.Fprintf(w, "Método no soportado")
+	http.HandleFunc("/wc/cups", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			notSupportedMethod(w, r)
 			return
-
 		}
+		GetWorldCupsData(w, r)
+	})
+
+	http.HandleFunc("/wc/matches", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			notSupportedMethod(w, r)
+			return
+		}
+		GetWorldCupsMatches(w, r)
+	})
+
+	http.HandleFunc("/wc/players", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			notSupportedMethod(w, r)
+			return
+		}
+		GetWorldCupsPlayers(w, r)
 	})
 }
