@@ -15,7 +15,7 @@ func check(e error) {
 	}
 }
 
-func GetWinnerBetweet(w http.ResponseWriter, r *http.Request, home string, away string) {
+func GetWinnerBetween(w http.ResponseWriter, r *http.Request, home string, away string) {
 	mwc := logic.GetMostWorldCups(home, away)
 	mwm := logic.GetMostWinMatches(home, away)
 	rw := logic.GetRecordWinner(home, away)

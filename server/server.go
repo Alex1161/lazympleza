@@ -1,9 +1,12 @@
 package server
 
-import "net/http"
+import (
+	"lazympleza/lazy"
+	"net/http"
+)
 
-func NewServer(port string) *http.Server {
-	initRoutes()
+func NewServer(port string, predictions lazy.LazyFunction) *http.Server {
+	initRoutes(predictions)
 
 	return &http.Server{
 		Addr: port,

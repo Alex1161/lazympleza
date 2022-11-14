@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"lazympleza/lazy"
 	"net/http"
 )
 
@@ -10,7 +11,18 @@ func notSupportedMethod(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Método no soportado")
 }
 
-func initRoutes() {
+func initRoutes(predictions lazy.LazyFunction) {
+	http.HandleFunc("/winner", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			notSupportedMethod(w, r)
+			return
+		}
+
+		winner := predictions()
+
+		fmt.Fprintf(w, "El ganador entre del mundial es "+winner)
+	})
+
 	http.HandleFunc("/winner_between", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "GET" {
 			notSupportedMethod(w, r)
@@ -21,7 +33,7 @@ func initRoutes() {
 
 		home := r.URL.Query()["home"][0]
 		away := r.URL.Query()["away"][0]
-		GetWinnerBetweet(w, r, home, away)
+		GetWinnerBetween(w, r, home, away)
 	})
 
 	http.HandleFunc("/wc/cups", func(w http.ResponseWriter, r *http.Request) {

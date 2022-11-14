@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"lazympleza/decisionTree"
 	"lazympleza/server"
 	"log"
 	"os"
@@ -10,13 +11,14 @@ import (
 )
 
 func main() {
+	predictions := decisionTree.CreateDecisionTree()
 
 	ctx := context.Background()
 
 	serverDoneChan := make(chan os.Signal, 1)
 	signal.Notify(serverDoneChan, os.Interrupt, syscall.SIGTERM)
 
-	svr := server.NewServer(":8080")
+	svr := server.NewServer(":8080", predictions)
 
 	go func() {
 		err := svr.ListenAndServe()
