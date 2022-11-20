@@ -1,11 +1,11 @@
 package server
 
 import (
-	"lazympleza/lazy"
+	"lazympleza/memoize"
 	"net/http"
 )
 
-func NewServer(port string, predictions lazy.LazyFunction) *http.Server {
+func NewServer(port string, predictions memoize.MemoizedFunction) *http.Server {
 	initRoutes(predictions)
 
 	return &http.Server{

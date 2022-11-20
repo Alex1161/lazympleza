@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"lazympleza/lazy"
+	"lazympleza/memoize"
 	"net/http"
 )
 
@@ -11,7 +11,7 @@ func notSupportedMethod(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Método no soportado")
 }
 
-func initRoutes(predictions lazy.LazyFunction) {
+func initRoutes(predictions memoize.MemoizedFunction) {
 	http.HandleFunc("/winner", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "GET" {
 			notSupportedMethod(w, r)

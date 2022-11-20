@@ -1,15 +1,13 @@
 package decisionTree
 
 import (
-	"lazympleza/lazy"
-	"time"
+	"lazympleza/memoize"
 )
 
-func _GetWinnerWorldCup() string {
-	time.Sleep(10 * time.Second)
+func _GetWinnerWorldCup(args ...string) string {
 	return "Argentina (anulo mufa)"
 }
 
-func GetWinnerWorldCup() lazy.LazyFunction {
-	return lazy.Lazy(_GetWinnerWorldCup)
+func GetWinnerWorldCup() memoize.MemoizedFunction {
+	return memoize.Memoized(_GetWinnerWorldCup)
 }

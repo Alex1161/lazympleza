@@ -1,9 +1,9 @@
 package decisionTree
 
-import "lazympleza/lazy"
+import "lazympleza/memoize"
 
-type DecisionTree lazy.LazyFunction
+type DecisionTree memoize.MemoizedFunction
 
-func CreateDecisionTree() lazy.LazyFunction {
+func CreateDecisionTree() memoize.MemoizedFunction {
 	return GetWinnerWorldCup()
 }
