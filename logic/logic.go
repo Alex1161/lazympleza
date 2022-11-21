@@ -13,7 +13,7 @@ func check(e error) {
 }
 
 func GetMostWorldCups(home string, away string) float64 {
-	f, err := os.Open("../WorldCups.csv")
+	f, err := os.Open("./datasets/WorldCups.csv")
 	check(err)
 
 	fileReader := csv.NewReader(f)
@@ -45,7 +45,7 @@ func GetMostWorldCups(home string, away string) float64 {
 }
 
 func GetMostWinMatches(home string, away string) float64 {
-	f, err := os.Open("../WorldCupMatches.csv")
+	f, err := os.Open("./datasets/international_matches.csv")
 	check(err)
 
 	fileReader := csv.NewReader(f)
@@ -57,15 +57,15 @@ func GetMostWinMatches(home string, away string) float64 {
 	away_wins := 0
 
 	/*
-		5 Home Team Name
-		6 Home Team Goals
-		7 Away Team Goals
-		8 Away Team Name
+		1 Home Team Name
+		9 Home Team Goals
+		10 Away Team Goals
+		2 Away Team Name
 	*/
 	for i := 1; i < len(records); i++ {
-		if (records[i][5] == home && records[i][6] > records[i][7]) || (records[i][8] == home && records[i][7] > records[i][6]) {
+		if (records[i][1] == home && records[i][9] > records[i][10]) || (records[i][2] == home && records[i][10] > records[i][9]) {
 			home_wins++
-		} else if (records[i][5] == away && records[i][6] > records[i][7]) || (records[i][8] == away && records[i][7] > records[i][6]) {
+		} else if (records[i][1] == away && records[i][9] > records[i][10]) || (records[i][2] == away && records[i][10] > records[i][9]) {
 			away_wins++
 		}
 	}
@@ -80,7 +80,7 @@ func GetMostWinMatches(home string, away string) float64 {
 }
 
 func GetRecordWinner(home string, away string) float64 {
-	f, err := os.Open("../WorldCupMatches.csv")
+	f, err := os.Open("./datasets/international_matches.csv")
 	check(err)
 
 	fileReader := csv.NewReader(f)
@@ -92,22 +92,22 @@ func GetRecordWinner(home string, away string) float64 {
 	away_wins := 0
 
 	/*
-		5 Home Team Name
-		6 Home Team Goals
-		7 Away Team Goals
-		8 Away Team Name
+		1 Home Team Name
+		9 Home Team Goals
+		10 Away Team Goals
+		2 Away Team Name
 	*/
 	for i := 1; i < len(records); i++ {
-		if records[i][5] == home && records[i][8] == away {
-			if records[i][6] > records[i][7] {
+		if records[i][1] == home && records[i][2] == away {
+			if records[i][9] > records[i][10] {
 				home_wins++
-			} else if records[i][6] < records[i][7] {
+			} else if records[i][9] < records[i][10] {
 				away_wins++
 			}
-		} else if records[i][5] == away && records[i][8] == home {
-			if records[i][6] > records[i][7] {
+		} else if records[i][1] == away && records[i][2] == home {
+			if records[i][9] > records[i][10] {
 				away_wins++
-			} else if records[i][6] < records[i][7] {
+			} else if records[i][9] < records[i][10] {
 				home_wins++
 			}
 		}
