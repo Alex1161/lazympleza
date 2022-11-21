@@ -2,6 +2,7 @@ package logic
 
 import (
 	"encoding/csv"
+	"math/rand"
 	"os"
 )
 
@@ -118,5 +119,28 @@ func GetRecordWinner(home string, away string) float64 {
 		return 1
 	} else {
 		return 0
+	}
+}
+
+func GetWinnerBetween(home string, away string) (string, float64) {
+	mwc := GetMostWorldCups(home, away)
+	mwm := GetMostWinMatches(home, away)
+	rw := GetRecordWinner(home, away)
+
+	analysis := 0.5*mwc + 0.25*mwm + 0.25*rw
+
+	if analysis < -0.25 {
+		probability := (-0.25 - analysis) / 0.75
+		return home, probability
+	} else if analysis > 0.25 {
+		probability := (analysis - 0.25) / 0.75
+		return away, probability
+	} else {
+		penaltyWinner := rand.Float64()
+		if penaltyWinner < 0.5 {
+			return home, -1
+		} else {
+			return away, -1
+		}
 	}
 }
