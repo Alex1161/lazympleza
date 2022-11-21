@@ -1,13 +1,11 @@
 package decisionTree
 
-import (
-	"lazympleza/memoize"
-)
+type Prediction func(args ...string) string
 
 func _GetWinnerWorldCup(args ...string) string {
 	return "Argentina (anulo mufa)"
 }
 
-func GetWinnerWorldCup() memoize.MemoizedFunction {
-	return memoize.Memoized(_GetWinnerWorldCup)
+func GetWinnerWorldCup() Prediction {
+	return _GetWinnerWorldCup
 }

@@ -1,9 +1,15 @@
 package decisionTree
 
-import "lazympleza/memoize"
+import "fmt"
 
-type DecisionTree memoize.MemoizedFunction
+func CreateDecisionTree() chan string {
+	tree := make(chan string)
+	go func() {
+		for request := range tree {
+			fmt.Println(request)
+			tree <- "Argentina (anulo mufa)"
+		}
+	}()
 
-func CreateDecisionTree() memoize.MemoizedFunction {
-	return GetWinnerWorldCup()
+	return tree
 }

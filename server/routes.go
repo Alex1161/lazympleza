@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"lazympleza/memoize"
+	"lazympleza/decisionTree"
 	"net/http"
 )
 
@@ -11,14 +11,17 @@ func notSupportedMethod(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Método no soportado")
 }
 
-func initRoutes(predictions memoize.MemoizedFunction) {
+func initRoutes(tree chan string) {
 	http.HandleFunc("/winner", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "GET" {
 			notSupportedMethod(w, r)
 			return
 		}
 
-		winner := predictions()
+		request := decisionTree.CreateRequest("winner", []string{})
+
+		tree <- request.ToString()
+		winner := <-tree
 
 		fmt.Fprintf(w, "El ganador entre del mundial es "+winner)
 	})
