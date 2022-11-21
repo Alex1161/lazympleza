@@ -16,20 +16,11 @@ func check(e error) {
 }
 
 func GetWinnerBetween(w http.ResponseWriter, r *http.Request, home string, away string) {
-	mwc := logic.GetMostWorldCups(home, away)
-	mwm := logic.GetMostWinMatches(home, away)
-	rw := logic.GetRecordWinner(home, away)
-
-	analysis := 0.5*mwc + 0.25*mwm + 0.25*rw
-
-	if analysis < -0.25 {
-		probability := (-0.25 - analysis) / 0.75
-		fmt.Fprintf(w, "El ganador entre "+home+" y "+away+" es: "+home+" con una certeza de "+strconv.FormatInt(int64(probability*100), 10)+"%")
-	} else if analysis > 0.25 {
-		probability := (analysis - 0.25) / 0.75
-		fmt.Fprintf(w, "El ganador entre "+home+" y "+away+" es: "+away+" con una certeza de "+strconv.FormatInt(int64(probability*100), 10)+"%")
+	winner, probability := logic.GetWinnerBetween(home, away)
+	if probability < 0 {
+		fmt.Fprintf(w, "El ganador entre "+home+" y "+away+" es: "+winner+" por penales luego de un partido muy peleado.")
 	} else {
-		fmt.Fprintf(w, "El partido entre "+home+" y "+away+" termina en un empate despues de un partido muy peleado")
+		fmt.Fprintf(w, "El ganador entre "+home+" y "+away+" es: "+winner+" con una certeza de "+strconv.FormatInt(int64(probability*100), 10)+"%")
 	}
 }
 

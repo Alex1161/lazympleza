@@ -23,7 +23,7 @@ func initRoutes(tree chan string) {
 		tree <- request.ToString()
 		winner := <-tree
 
-		fmt.Fprintf(w, "El ganador entre del mundial es "+winner)
+		fmt.Fprintf(w, "El ganador del mundial es "+winner)
 	})
 
 	http.HandleFunc("/winner_between", func(w http.ResponseWriter, r *http.Request) {
@@ -31,8 +31,6 @@ func initRoutes(tree chan string) {
 			notSupportedMethod(w, r)
 			return
 		}
-		// Ejemplo de como catchear los parametros
-		//log.Println(r.URL.Query()["var"])
 
 		home := r.URL.Query()["home"][0]
 		away := r.URL.Query()["away"][0]
