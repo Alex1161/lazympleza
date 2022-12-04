@@ -7,16 +7,16 @@ import (
 )
 
 func SimulateGroup(group string) (string, string) {
-	groupA := [4]string{"Qatar", "Ecuador", "Senegal", "Netherlands"}
-	groupB := [4]string{"England", "Iran", "USA", "Wales"}
-	groupC := [4]string{"Argentina", "Saudi Arabia", "Mexico", "Poland"}
-	groupD := [4]string{"France", "Australia", "Denmark", "Tunisia"}
-	groupE := [4]string{"Spain", "Costa Rica", "Germany", "Japan"}
-	groupF := [4]string{"Belgium", "Canada", "Morocco", "Croatia"}
-	groupG := [4]string{"Brazil", "Serbia", "Switzerland", "Cameroon"}
-	groupH := [4]string{"Portugal", "Ghana", "Uruguay", "South Korea"}
+	groupA := []string{"Qatar", "Ecuador", "Senegal", "Netherlands"}
+	groupB := []string{"England", "Iran", "USA", "Wales"}
+	groupC := []string{"Argentina", "Saudi Arabia", "Mexico", "Poland"}
+	groupD := []string{"France", "Australia", "Denmark", "Tunisia"}
+	groupE := []string{"Spain", "Costa Rica", "Germany", "Japan"}
+	groupF := []string{"Belgium", "Canada", "Morocco", "Croatia"}
+	groupG := []string{"Brazil", "Serbia", "Switzerland", "Cameroon"}
+	groupH := []string{"Portugal", "Ghana", "Uruguay", "South Korea"}
 
-	var groupSelected [4]string
+	var groupSelected []string
 
 	switch group {
 	case "A":
@@ -146,7 +146,7 @@ func GetWinnerWorldCup() string {
 }
 
 // No estoy pudiendo usar esta misma funcion pero dejandola en el archivo util
-func findIndex(array [4]string, value string) int {
+func findIndex(array []string, value string) int {
 	for p, v := range array {
 		if v == value {
 			return p
