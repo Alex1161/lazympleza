@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
-	"time"
 )
 
 func SimulateGroup(group string, tree decision_tree) (string, string) {
@@ -93,7 +92,7 @@ func GetWinnerBetween(home string, away string, tree decision_tree) (string, flo
 	} else if home_result == "Lose" {
 		return away, 1
 	} else {
-		source := rand.NewSource(time.Now().UnixNano())
+		source := rand.NewSource(45)
 		rnd := rand.New(source)
 		simulation := rnd.Float64()
 		if simulation <= 0.5 {
@@ -169,13 +168,21 @@ func GetWinnerWorldCup(tree decision_tree) string {
 }
 
 func setMatchInfo(match_info map[string]string, home string, away string) {
-	countries_info := map[string]map[string]string{"Argentina": {"home_team_continent": "South America"}}
+	countries_info := map[string]map[string]string{
+		"Qatar": {"continent": "Asia"}, "Ecuador": {"continent": "South America"}, "Senegal": {"continent": "Africa"}, "Netherlands": {"continent": "Europe"},
+		"England": {"continent": "Europe"}, "Iran": {"continent": "Asia"}, "USA": {"continent": "North America"}, "Wales": {"continent": "Europe"},
+		"Argentina": {"continent": "South America"}, "Saudi Arabia": {"continent": "Asia"}, "Mexico": {"continent": "North America"}, "Poland": {"continent": "Europe"},
+		"France": {"continent": "Europe"}, "Australia": {"continent": "Oceania"}, "Denmark": {"continent": "Europe"}, "Tunisia": {"continent": "Africa"},
+		"Spain": {"continent": "Europe"}, "Costa Rica": {"continent": "North America"}, "Germany": {"continent": "Europe"}, "Japan": {"continent": "Asia"},
+		"Belgium": {"continent": "Europe"}, "Canada": {"continent": "North America"}, "Morocco": {"continent": "Africa"}, "Croatia": {"continent": "Europe"},
+		"Brazil": {"continent": "South America"}, "Serbia": {"continent": "Europe"}, "Switzerland": {"continent": "Europe"}, "Cameroon": {"continent": "Africa"},
+		"Portugal": {"continent": "Europe"}, "Ghana": {"continent": "Africa"}, "Uruguay": {"continent": "South America"}, "South Korea": {"continent": "Asia"}}
 
 	match_info["tournament"] = "FIFA World Cup"
 	match_info["home_team"] = home
 	match_info["away_team"] = away
-	match_info["home_team_continent"] = countries_info[home]["home_team_continent"]
-	match_info["away_team_continent"] = countries_info[home]["home_team_continent"]
+	match_info["home_team_continent"] = countries_info[home]["continent"]
+	match_info["away_team_continent"] = countries_info[away]["continent"]
 }
 
 // No estoy pudiendo usar esta misma funcion pero dejandola en el archivo util
