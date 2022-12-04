@@ -241,9 +241,9 @@ func predict(match_info map[string]string, tree decision_tree) string {
 			source := rand.NewSource(45)
 			rnd := rand.New(source)
 			simulation := rnd.Float64()
-			if simulation <= 0.25 {
+			if simulation <= 0.1 {
 				poda.column = "Win"
-			} else if simulation <= 0.75 {
+			} else if simulation <= 0.9 {
 				poda.column = "Draw"
 			} else {
 				poda.column = "Lose"
