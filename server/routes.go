@@ -34,7 +34,12 @@ func initRoutes(tree chan string) {
 
 		home := r.URL.Query()["home"][0]
 		away := r.URL.Query()["away"][0]
-		GetWinnerBetween(w, r, home, away)
+
+		request := decisionTree.CreateRequest("winner_between", []string{home, away})
+		tree <- request.ToString()
+		winner := <-tree
+
+		fmt.Fprintf(w, "El ganador es "+winner)
 	})
 
 	http.HandleFunc("/wc/cups", func(w http.ResponseWriter, r *http.Request) {
