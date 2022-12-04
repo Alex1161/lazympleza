@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
-	"time"
 )
 
 func SimulateGroup(group string, tree decision_tree) (string, string) {
@@ -93,7 +92,7 @@ func GetWinnerBetween(home string, away string, tree decision_tree) (string, flo
 	} else if home_result == "Lose" {
 		return away, 1
 	} else {
-		source := rand.NewSource(time.Now().UnixNano())
+		source := rand.NewSource(45)
 		rnd := rand.New(source)
 		simulation := rnd.Float64()
 		if simulation <= 0.5 {

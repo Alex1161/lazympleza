@@ -6,7 +6,6 @@ import (
 	"math"
 	"math/rand"
 	"os"
-	"time"
 
 	"github.com/go-gota/gota/dataframe"
 	"github.com/go-gota/gota/series"
@@ -239,7 +238,7 @@ func predict(match_info map[string]string, tree decision_tree) string {
 		}
 		if !found {
 			//Simulamos el resultado del partido ya que es un partido bastante peleado (le damos mas peso al empate)
-			source := rand.NewSource(time.Now().UnixNano())
+			source := rand.NewSource(45)
 			rnd := rand.New(source)
 			simulation := rnd.Float64()
 			if simulation <= 0.25 {
