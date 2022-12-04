@@ -272,13 +272,9 @@ func CreateDecisionTree() chan string {
 				result = GetWinnerWorldCup(dt)
 
 			case "winner_between":
-				match_info := make(map[string]string)
-				match_info["home_team"] = r.params[0]
-				match_info["away_team"] = r.params[1]
-				match_info["home_continent"] = "South America"
-				match_info["away_team"] = "South America"
-				match_info["tournament"] = "FIFA World Cup"
-				result = predict(match_info, dt)
+				home := r.params[0]
+				away := r.params[1]
+				result, _ = GetWinnerBetween(home, away, dt)
 			}
 			tree <- result
 		}
