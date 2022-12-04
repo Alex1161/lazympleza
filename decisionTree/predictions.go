@@ -2,11 +2,12 @@ package decisionTree
 
 import (
 	"fmt"
-	"lazympleza/logic"
+	"math/rand"
 	"strconv"
+	"time"
 )
 
-func SimulateGroup(group string) (string, string) {
+func SimulateGroup(group string, tree decision_tree) (string, string) {
 	groupA := []string{"Qatar", "Ecuador", "Senegal", "Netherlands"}
 	groupB := []string{"England", "Iran", "USA", "Wales"}
 	groupC := []string{"Argentina", "Saudi Arabia", "Mexico", "Poland"}
@@ -44,7 +45,7 @@ func SimulateGroup(group string) (string, string) {
 			if i == j {
 				continue
 			}
-			win, proba := logic.GetWinnerBetween(groupSelected[i], groupSelected[j])
+			win, proba := GetWinnerBetween(groupSelected[i], groupSelected[j], tree)
 			if proba < 0 {
 				groupPoints[i] = groupPoints[i] + 1
 				groupPoints[j] = groupPoints[j] + 1
@@ -80,26 +81,49 @@ func SimulateGroup(group string) (string, string) {
 	return first, second
 }
 
-func GetWinnerWorldCup() string {
+func GetWinnerBetween(home string, away string, tree decision_tree) (string, float64) {
+	match_info := make(map[string]string)
+
+	setMatchInfo(match_info, home, away)
+
+	home_result := predict(match_info, tree)
+
+	if home_result == "Win" {
+		return home, 1
+	} else if home_result == "Lose" {
+		return away, 1
+	} else {
+		source := rand.NewSource(time.Now().UnixNano())
+		rnd := rand.New(source)
+		simulation := rnd.Float64()
+		if simulation <= 0.5 {
+			return home, -1
+		} else {
+			return away, -1
+		}
+	}
+}
+
+func GetWinnerWorldCup(tree decision_tree) string {
 	//Fase de grupos
-	firstA, secondA := SimulateGroup("A")
-	firstB, secondB := SimulateGroup("B")
-	firstC, secondC := SimulateGroup("C")
-	firstD, secondD := SimulateGroup("D")
-	firstE, secondE := SimulateGroup("E")
-	firstF, secondF := SimulateGroup("F")
-	firstG, secondG := SimulateGroup("G")
-	firstH, secondH := SimulateGroup("H")
+	firstA, secondA := SimulateGroup("A", tree)
+	firstB, secondB := SimulateGroup("B", tree)
+	firstC, secondC := SimulateGroup("C", tree)
+	firstD, secondD := SimulateGroup("D", tree)
+	firstE, secondE := SimulateGroup("E", tree)
+	firstF, secondF := SimulateGroup("F", tree)
+	firstG, secondG := SimulateGroup("G", tree)
+	firstH, secondH := SimulateGroup("H", tree)
 
 	//Octavos de final
-	winnerAB, prob := logic.GetWinnerBetween(firstA, secondB)
-	winnerCD, prob := logic.GetWinnerBetween(firstC, secondD)
-	winnerEF, prob := logic.GetWinnerBetween(firstE, secondF)
-	winnerGH, prob := logic.GetWinnerBetween(firstG, secondH)
-	winnerBA, prob := logic.GetWinnerBetween(firstB, secondA)
-	winnerDC, prob := logic.GetWinnerBetween(firstD, secondC)
-	winnerFE, prob := logic.GetWinnerBetween(firstF, secondE)
-	winnerHG, prob := logic.GetWinnerBetween(firstH, secondG)
+	winnerAB, _ := GetWinnerBetween(firstA, secondB, tree)
+	winnerCD, _ := GetWinnerBetween(firstC, secondD, tree)
+	winnerEF, _ := GetWinnerBetween(firstE, secondF, tree)
+	winnerGH, _ := GetWinnerBetween(firstG, secondH, tree)
+	winnerBA, _ := GetWinnerBetween(firstB, secondA, tree)
+	winnerDC, _ := GetWinnerBetween(firstD, secondC, tree)
+	winnerFE, _ := GetWinnerBetween(firstF, secondE, tree)
+	winnerHG, _ := GetWinnerBetween(firstH, secondG, tree)
 
 	fmt.Println("")
 	fmt.Println("---- Octavos de final ----")
@@ -113,10 +137,10 @@ func GetWinnerWorldCup() string {
 	fmt.Println("El ganador entre " + firstH + " y " + secondG + " es: " + winnerHG)
 
 	//Cuartos de final
-	winnerQ1, prob := logic.GetWinnerBetween(winnerAB, winnerCD)
-	winnerQ2, prob := logic.GetWinnerBetween(winnerEF, winnerGH)
-	winnerQ3, prob := logic.GetWinnerBetween(winnerBA, winnerDC)
-	winnerQ4, prob := logic.GetWinnerBetween(winnerFE, winnerHG)
+	winnerQ1, _ := GetWinnerBetween(winnerAB, winnerCD, tree)
+	winnerQ2, _ := GetWinnerBetween(winnerEF, winnerGH, tree)
+	winnerQ3, _ := GetWinnerBetween(winnerBA, winnerDC, tree)
+	winnerQ4, _ := GetWinnerBetween(winnerFE, winnerHG, tree)
 
 	fmt.Println("")
 	fmt.Println("---- Cuartos de final ----")
@@ -126,8 +150,8 @@ func GetWinnerWorldCup() string {
 	fmt.Println("El ganador entre " + winnerFE + " y " + winnerHG + " es: " + winnerQ4)
 
 	//Semifinal
-	finalist1, prob := logic.GetWinnerBetween(winnerQ1, winnerQ2)
-	finalist2, prob := logic.GetWinnerBetween(winnerQ3, winnerQ4)
+	finalist1, _ := GetWinnerBetween(winnerQ1, winnerQ2, tree)
+	finalist2, _ := GetWinnerBetween(winnerQ3, winnerQ4, tree)
 
 	fmt.Println("")
 	fmt.Println("---- Semifinal ----")
@@ -135,14 +159,23 @@ func GetWinnerWorldCup() string {
 	fmt.Println("El ganador entre " + winnerQ3 + " y " + winnerQ4 + " es: " + finalist2)
 
 	//Final
-	WCWinner, prob := logic.GetWinnerBetween(finalist1, finalist2)
+	WCWinner, _ := GetWinnerBetween(finalist1, finalist2, tree)
 
 	fmt.Println("")
 	fmt.Println("---- Final ----")
 	fmt.Println("El ganador entre " + finalist1 + " y " + finalist2 + " es: " + WCWinner)
-	fmt.Println(prob)
 
 	return WCWinner
+}
+
+func setMatchInfo(match_info map[string]string, home string, away string) {
+	countries_info := map[string]map[string]string{"Argentina": {"home_team_continent": "South America"}}
+
+	match_info["tournament"] = "FIFA World Cup"
+	match_info["home_team"] = home
+	match_info["away_team"] = away
+	match_info["home_team_continent"] = countries_info[home]["home_team_continent"]
+	match_info["away_team_continent"] = countries_info[home]["home_team_continent"]
 }
 
 // No estoy pudiendo usar esta misma funcion pero dejandola en el archivo util
