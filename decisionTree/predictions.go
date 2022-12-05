@@ -92,7 +92,7 @@ func GetWinnerBetween(home string, away string, tree decision_tree) (string, flo
 	} else if home_result == "Lose" {
 		return away, 1
 	} else {
-		source := rand.NewSource(45)
+		source := rand.NewSource(1)
 		rnd := rand.New(source)
 		simulation := rnd.Float64()
 		if simulation <= 0.5 {
@@ -169,20 +169,26 @@ func GetWinnerWorldCup(tree decision_tree) string {
 
 func setMatchInfo(match_info map[string]string, home string, away string) {
 	countries_info := map[string]map[string]string{
-		"Qatar": {"continent": "Asia"}, "Ecuador": {"continent": "South America"}, "Senegal": {"continent": "Africa"}, "Netherlands": {"continent": "Europe"},
-		"England": {"continent": "Europe"}, "Iran": {"continent": "Asia"}, "USA": {"continent": "North America"}, "Wales": {"continent": "Europe"},
-		"Argentina": {"continent": "South America"}, "Saudi Arabia": {"continent": "Asia"}, "Mexico": {"continent": "North America"}, "Poland": {"continent": "Europe"},
-		"France": {"continent": "Europe"}, "Australia": {"continent": "Oceania"}, "Denmark": {"continent": "Europe"}, "Tunisia": {"continent": "Africa"},
-		"Spain": {"continent": "Europe"}, "Costa Rica": {"continent": "North America"}, "Germany": {"continent": "Europe"}, "Japan": {"continent": "Asia"},
-		"Belgium": {"continent": "Europe"}, "Canada": {"continent": "North America"}, "Morocco": {"continent": "Africa"}, "Croatia": {"continent": "Europe"},
-		"Brazil": {"continent": "South America"}, "Serbia": {"continent": "Europe"}, "Switzerland": {"continent": "Europe"}, "Cameroon": {"continent": "Africa"},
-		"Portugal": {"continent": "Europe"}, "Ghana": {"continent": "Africa"}, "Uruguay": {"continent": "South America"}, "South Korea": {"continent": "Asia"}}
+		"Qatar": {"continent": "Asia", "neutral_location": "False"}, "Ecuador": {"continent": "South America", "neutral_location": "True"}, "Senegal": {"continent": "Africa", "neutral_location": "True"}, "Netherlands": {"continent": "Europe", "neutral_location": "True"},
+		"England": {"continent": "Europe", "neutral_location": "True"}, "Iran": {"continent": "Asia", "neutral_location": "True"}, "USA": {"continent": "North America", "neutral_location": "True"}, "Wales": {"continent": "Europe", "neutral_location": "True"},
+		"Argentina": {"continent": "South America", "neutral_location": "True"}, "Saudi Arabia": {"continent": "Asia", "neutral_location": "True"}, "Mexico": {"continent": "North America", "neutral_location": "True"}, "Poland": {"continent": "Europe", "neutral_location": "True"},
+		"France": {"continent": "Europe", "neutral_location": "True"}, "Australia": {"continent": "Oceania", "neutral_location": "True"}, "Denmark": {"continent": "Europe", "neutral_location": "True"}, "Tunisia": {"continent": "Africa", "neutral_location": "True"},
+		"Spain": {"continent": "Europe", "neutral_location": "True"}, "Costa Rica": {"continent": "North America", "neutral_location": "True"}, "Germany": {"continent": "Europe", "neutral_location": "True"}, "Japan": {"continent": "Asia", "neutral_location": "True"},
+		"Belgium": {"continent": "Europe", "neutral_location": "True"}, "Canada": {"continent": "North America", "neutral_location": "True"}, "Morocco": {"continent": "Africa", "neutral_location": "True"}, "Croatia": {"continent": "Europe", "neutral_location": "True"},
+		"Brazil": {"continent": "South America", "neutral_location": "True"}, "Serbia": {"continent": "Europe", "neutral_location": "True"}, "Switzerland": {"continent": "Europe", "neutral_location": "True"}, "Cameroon": {"continent": "Africa", "neutral_location": "True"},
+		"Portugal": {"continent": "Europe", "neutral_location": "True"}, "Ghana": {"continent": "Africa", "neutral_location": "True"}, "Uruguay": {"continent": "South America", "neutral_location": "True"}, "South Korea": {"continent": "Asia", "neutral_location": "True"}}
 
 	match_info["tournament"] = "FIFA World Cup"
 	match_info["home_team"] = home
 	match_info["away_team"] = away
 	match_info["home_team_continent"] = countries_info[home]["continent"]
 	match_info["away_team_continent"] = countries_info[away]["continent"]
+	if countries_info[home]["neutral_location"] == "False" || countries_info[away]["neutral_location"] == "False" {
+		match_info["neutral_location"] = "False"
+	} else {
+		match_info["neutral_location"] = "True"
+	}
+	match_info["country"] = "Qatar"
 }
 
 // No estoy pudiendo usar esta misma funcion pero dejandola en el archivo util
