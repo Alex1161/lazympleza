@@ -1,7 +1,6 @@
 package decisionTree
 
 import (
-	"fmt"
 	"log"
 	"math"
 	"math/rand"
@@ -214,11 +213,11 @@ func _createDecisionTree() decision_tree {
 
 	df := dataframe.ReadCSV(file)
 
-	COLS := []string{"home_team", "away_team", "home_team_continent", "away_team_continent", "tournament"}
+	COLS := []string{"home_team", "away_team", "home_team_continent", "away_team_continent", "tournament", "neutral_location", "country"}
 
 	tree := decision_tree{"", nil}
 
-	fit(df, COLS, "home_team_result", 4, &tree)
+	fit(df, COLS, "home_team_result", 6, &tree)
 
 	return tree
 }
@@ -238,12 +237,12 @@ func predict(match_info map[string]string, tree decision_tree) string {
 		}
 		if !found {
 			//Simulamos el resultado del partido ya que es un partido bastante peleado (le damos mas peso al empate)
-			source := rand.NewSource(45)
+			source := rand.NewSource(1)
 			rnd := rand.New(source)
 			simulation := rnd.Float64()
-			if simulation <= 0.1 {
+			if simulation <= 0.15 {
 				poda.column = "Win"
-			} else if simulation <= 0.9 {
+			} else if simulation <= 0.85 {
 				poda.column = "Draw"
 			} else {
 				poda.column = "Lose"
@@ -263,7 +262,6 @@ func CreateDecisionTree() chan string {
 		dt := _createDecisionTree()
 
 		for request := range tree {
-			fmt.Println(request)
 			r := ToRequest(request)
 			var result string
 
